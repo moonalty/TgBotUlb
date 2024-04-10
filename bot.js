@@ -49,25 +49,38 @@ bot.on ('message', async (ctx) => {
                 case 0:
                      weatherCode = 'Чистое небо';
                      break;
-                case (1||2||3) :
+                case 1:
+                case 2:
+                case 3:
                      weatherCode = 'Mainly clear, partly cloudy, and overcast';
                     break
-                case (46||48):
+                case 48:
+                case 46:
                      weatherCode = 'Fog and depositing rime fog';
                     break
-                case (51||53||55):
+                case 55:
+                case 53:
+                case 51:
                      weatherCode = 'Drizzle: Light, moderate, and dense intensity';
                     break
-                case (56||57):
+                case (56):
+                case (57):
                      weatherCode = 'Freezing Drizzle: Light and dense intensity';
                     break
-                case (61||63||65||66||67):
+                case 61:
+                case 63:
+                case 65:
+                case 66:
+                case 67:
                      weatherCode = 'Rain: Slight, moderate and heavy intensity';
                     break
-                case (73||75):
+                case 73:
+                case 75:
                      weatherCode = 'Snow Fall';
                     break
-                case (95||96||99):
+                case 95:
+                case 96:
+                case 99:
                      weatherCode = 'Thunder';
                     break
                 default:
