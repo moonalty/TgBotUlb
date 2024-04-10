@@ -7,12 +7,12 @@ const commands = [
         description: "Узнать погоду"
     },
     {
-        command: "ref",
-        description: "Получить реферальную ссылку"
+        command: "location",
+        description: "Получить мои координаты"
     },
     {
         command: "help",
-        description: "Раздел помощи"
+        description: "Раздел помощи unable"
     },
 
 ]
@@ -30,14 +30,16 @@ bot.on ('message', async (ctx) => {
     // bot.command(commands);
 
     //
-    if ((ctx.message.text === 'roll')){
+    if ((ctx.message.text === 'rolla')){
         console.log('dices rolled')
         ctx.sendDice();
-    } else if(ctx.message.sticker || ctx.message.text === '/weather') {
+    }
+    if(ctx.message.sticker || ctx.message.text === '/weather') {
         try {
             const response = await axios.get('https://mylocation.org');
             const root = parse(response.data);
             const allTags = root.querySelector('#map-0');
+                console.log(root.childNodes[0])
             const longitudeAttitude = allTags._attrs.title.split(', ');
             const weatherAPIUrl = `https://api.open-meteo.com/v1/forecast?latitude=${longitudeAttitude[0]}&longitude=${longitudeAttitude[1]}&current=temperature_2m,rain,showers,snowfall,weather_code,wind_speed_10m&hourly=temperature_2m,rain,weather_code,cloud_cover,wind_speed_10m`
             const responseWeather = await axios.get(weatherAPIUrl);
@@ -47,25 +49,25 @@ bot.on ('message', async (ctx) => {
                 case 0:
                      weatherCode = 'Чистое небо';
                      break;
-                case 1,2,3 :
+                case (1||2||3) :
                      weatherCode = 'Mainly clear, partly cloudy, and overcast';
                     break
-                case 46,48:
+                case (46||48):
                      weatherCode = 'Fog and depositing rime fog';
                     break
-                case 51,53,55:
+                case (51||53||55):
                      weatherCode = 'Drizzle: Light, moderate, and dense intensity';
                     break
-                case 56,57:
+                case (56||57):
                      weatherCode = 'Freezing Drizzle: Light and dense intensity';
                     break
-                case 61,63,65,66,67:
+                case (61||63||65||66||67):
                      weatherCode = 'Rain: Slight, moderate and heavy intensity';
                     break
-                case 73,75:
+                case (73||75):
                      weatherCode = 'Snow Fall';
                     break
-                case 95,96,99:
+                case (95||96||99):
                      weatherCode = 'Thunder';
                     break
                 default:
@@ -78,6 +80,14 @@ bot.on ('message', async (ctx) => {
             console.log(e)
         }
 
+    }
+
+    if (ctx.message.text === '/location'){
+        const response = await axios.get('https://mylocation.org');
+        const root = parse(response.data);
+        const allTags = root.querySelector('#map-0');
+        const longitudeAttitude = allTags._attrs.title;
+        ctx.reply(`Координаты ${longitudeAttitude}`)
     }
     // await bot.telegram.sendMessage(ctx.chat.id, "Please click on button below.", {
     //     reply_markup: {
